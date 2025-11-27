@@ -635,6 +635,7 @@ def run_NB(trnX, trnY, tstX, tstY, metric: str = "accuracy") -> dict[str, float]
         prd: ndarray = best_model.predict(tstX)
         for key in CLASS_EVAL_METRICS:
             eval[key] = CLASS_EVAL_METRICS[key](tstY, prd)
+        eval["confusion_matrix"] = confusion_matrix(tstY, prd)
     return eval
 
 
@@ -655,6 +656,7 @@ def run_KNN(trnX, trnY, tstX, tstY, metric="accuracy") -> dict[str, float]:
         prd: ndarray = best_model.predict(tstX)
         for key in CLASS_EVAL_METRICS:
             eval[key] = CLASS_EVAL_METRICS[key](tstY, prd)
+        eval["confusion_matrix"] = confusion_matrix(tstY, prd)
     return eval
 
 
@@ -672,6 +674,7 @@ def evaluate_approach(
     if eval_NB != {} and eval_KNN != {}:
         for met in CLASS_EVAL_METRICS:
             eval[met] = [eval_NB[met], eval_KNN[met]]
+        eval["confusion_matrix"] = [eval_NB["confusion_matrix"], eval_KNN["confusion_matrix"]]
     return eval
 
 
