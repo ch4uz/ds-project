@@ -1,13 +1,19 @@
 from numpy import array, ndarray
 from matplotlib.pyplot import subplots
+from matplotlib.pyplot import figure, savefig, show, subplots
+from pandas import DataFrame
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier
 from typing import Literal
 
-from dslabs_functions import CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, HEIGHT
+from dslabs_functions import \
+    CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, \
+    HEIGHT, run_NB, run_KNN, plot_multibar_chart, \
+    plot_confusion_matrix
 
 def naive_Bayes_study(
     trnX: ndarray,
@@ -284,3 +290,57 @@ def mlp_study(
     )
 
     return best_model, best_params
+
+def evaluate_approach(
+    data: DataFrame, 
+    target: str = "class", 
+    metric: str = "recall",
+    test_size: float = 0.3,
+    random_state: int = 42
+) -> dict[str, list]:
+    df = data.copy()
+    
+    y = df.pop(target).values
+    X = df.values
+    
+    # Split the data
+    trnX, tstX, trnY, tstY = train_test_split(
+        X, y, test_size=test_size, random_state=random_state
+    )
+    
+    eval: dict[str, list] = {}
+
+    eval_NB: dict[str, float] = run_NB(trnX, trnY, tstX, tstY, metric=metric)
+    eval_KNN: dict[str, float] = run_KNN(trnX, trnY, tstX, tstY, metric=metric)
+    
+    if eval_NB != {} and eval_KNN != {}:
+        for met in CLASS_EVAL_METRICS:
+            eval[met] = [eval_NB[met], eval_KNN[met]]
+        eval["confusion_matrix"] = [eval_NB["confusion_matrix"], eval_KNN["confusion_matrix"]]
+    
+    return eval
+
+def evaluate_and_plot(
+    df: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    target_name: str = "class"
+) -> None:
+    figure()
+    eval: dict[str, list] = evaluate_approach(data=df, target=target_name)
+    plot_multibar_chart(
+        ["NB", "KNN"], {k: v for k, v in eval.items() if k != "confusion_matrix"}, title=f"{file_tag}-{approach} evaluation", percentage=True
+    )
+    savefig(f"../../charts/{lab_folder}/{file_tag}_{approach}_nb_vs_knn_performance.png", bbox_inches='tight')
+    show()
+
+    fig, axs = subplots(1, 2, figsize=(2 * HEIGHT, HEIGHT))
+    labels = df[target_name].unique()
+    labels.sort()
+    plot_confusion_matrix(eval["confusion_matrix"][0], labels, ax=axs[0])
+    axs[0].set_title(f"{file_tag}-{approach} NB Confusion Matrix")
+    plot_confusion_matrix(eval["confusion_matrix"][1], labels, ax=axs[1])
+    axs[1].set_title(f"{file_tag}-{approach} KNN Confusion Matrix")
+    savefig(f"../../charts/{lab_folder}/{file_tag}_{approach}_nb_vs_knn_confusion_matrix.png", bbox_inches='tight')
+    show()
