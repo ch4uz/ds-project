@@ -625,19 +625,16 @@ def run_NB(trnX, trnY, tstX, tstY, metric: str = "accuracy") -> dict[str, float]
     eval: dict[str, float] = {}
 
     for clf in estimators:
-        print(f"Running {clf}...")
         try:
             estimators[clf].fit(trnX, trnY)
             prdY: ndarray = estimators[clf].predict(tstX)
             performance: float = CLASS_EVAL_METRICS[metric](tstY, prdY)
-            print(performance-best_performance)
             if performance - best_performance > DELTA_IMPROVE:
                 best_performance = performance
                 best_model = estimators[clf]
         except Exception:
             print(f"Couldn't run {clf}")
             continue
-    print(best_model)
     if best_model is not None:
         prd: ndarray = best_model.predict(tstX)
         for key in CLASS_EVAL_METRICS:
@@ -679,8 +676,6 @@ def evaluate_approach(
     eval_NB: dict[str, float] | None = run_NB(trnX, trnY, tstX, tstY, metric=metric)
     eval_KNN: dict[str, float] | None = run_KNN(trnX, trnY, tstX, tstY, metric=metric)
     
-    print(eval_NB)
-    print(eval_KNN)
     if eval_NB != {} and eval_KNN != {}:
         for met in CLASS_EVAL_METRICS:
             eval[met] = [eval_NB[met], eval_KNN[met]]
