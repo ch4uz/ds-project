@@ -274,10 +274,10 @@ There are no missing values in the Traffic Accident Dataset.
 \begin{figure}[H]
 \centering
 \subfloat[]{%
-  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_none_nb_MultinomialNB_best_recall_eval.png}%
+  \centering\includegraphics[width=0.5\columnwidth]{flight_outliers_none_nb_MultinomialNB_best_recall_eval.png}%
 }
 \subfloat[]{%
-  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_none_knn_KNN_best_recall_eval.png}%
+  \centering\includegraphics[width=0.5\columnwidth]{flight_outliers_none_knn_KNN_best_recall_eval.png}%
 }
 \caption{Best Bayes and KNN Models applied to best Outlier treatment for Flight Cancellation Data}
 \end{figure}
@@ -286,7 +286,12 @@ There are no missing values in the Traffic Accident Dataset.
 % \ctext[RGB]{190,190,190}{Shall contain all relevant information and charts respecting to scaling transformation, such as the choices made and the impact of the different approaches on modelling results. Shall also clearly reveal the approach selected to proceed with the processing. If not applied explain the reason for that, based on data characteristics.  \textbf{Shall not exceed 200 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
+\subfloat[]{%
+  \centering\includegraphics[width=0.5\columnwidth]{flight_Standard-Scaler_nb_vs_knn_performance.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.5\columnwidth]{flight_MinMax-Scaler_knn_KNN_best_recall_eval.png}%
+}
 \caption{Scaling results with different approaches for Flight Cancellation Data}
 \end{figure}
 
