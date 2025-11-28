@@ -35,17 +35,23 @@ def naive_Bayes_study(
     best_performance = 0
 
     for clf_name in estimators:
-        xvalues.append(clf_name)
-        estimators[clf_name].fit(trnX, trnY)
-        prdY = estimators[clf_name].predict(tstX)
-        val = CLASS_EVAL_METRICS[metric](tstY, prdY)
-        if val - best_performance > DELTA_IMPROVE:
-            best_performance = val
-            best_params["name"] = clf_name
-            best_params[metric] = val
-            best_model = estimators[clf_name]
-        yvalues.append(val)
+        try :
+            estimators[clf_name].fit(trnX, trnY)
+            xvalues.append(clf_name)
+            prdY = estimators[clf_name].predict(tstX)
+            val = CLASS_EVAL_METRICS[metric](tstY, prdY)
+            if val - best_performance > DELTA_IMPROVE:
+                best_performance = val
+                best_params["name"] = clf_name
+                best_params[metric] = val
+                best_model = estimators[clf_name]
+            yvalues.append(val)
+        except Exception:
+            print(f"Couldn't run {clf_name}")
+            continue
 
+    print(xvalues)
+    print(yvalues)
     # get Axes from DSLabs helper
     ax = plot_bar_chart(
         xvalues,
@@ -325,10 +331,11 @@ def evaluate_and_plot(
     lab_folder: str,
     file_tag: str,
     approach: str,
-    target_name: str = "class"
+    target_name: str = "class",
+    metric: str = "recall"
 ) -> None:
     figure()
-    eval: dict[str, list] = evaluate_approach(data=df, target=target_name)
+    eval: dict[str, list] = evaluate_approach(data=df, target=target_name, metric=metric)
     plot_multibar_chart(
         ["NB", "KNN"], {k: v for k, v in eval.items() if k != "confusion_matrix"}, title=f"{file_tag}-{approach} evaluation", percentage=True
     )
