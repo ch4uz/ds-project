@@ -297,6 +297,24 @@ def mlp_study(
 
     return best_model, best_params
 
+def separate_train_test(
+    data: DataFrame, 
+    target: str, 
+    test_size: float = 0.3,
+    random_state: int = 42
+) -> {DataFrame, DataFrame, DataFrame, DataFrame}:
+    df = data.copy()
+    
+    y = df.pop(target).values
+    X = df.values
+    
+    # Split the data
+    trnX, tstX, trnY, tstY = train_test_split(
+        X, y, test_size=test_size, random_state=random_state
+    )
+    
+    return trnX, tstX, trnY, tstY
+
 def evaluate_approach(
     data: DataFrame, 
     target: str = "class", 
