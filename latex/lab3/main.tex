@@ -20,7 +20,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{eso-pic}
-\graphicspath{ {../images/} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/encodings}  {../../classification/ds1_traffic_accidents/charts/lab3_preparation/outliers} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/scaling} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/balancing} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/feat_selection_generation} {../../classification/ds2_flight_cancellation/charts/lab3_preparation/}}
+\graphicspath{ {../images/} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/encodings}  {../../classification/ds1_traffic_accidents/charts/lab3_preparation/outliers} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/scaling} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/balancing} {../../classification/ds1_traffic_accidents/charts/lab3_preparation/feat_selection_generation} {../../classification/ds2_flight_cancellation/charts/lab3_preparation}}
 \usepackage{subcaption}
 \usepackage{geometry}
 \usepackage{hyperref}
@@ -212,13 +212,43 @@ There are no missing values in the Traffic Accident Dataset.
 
 \subsection*{\textit{Variables Encoding}}
 % \ctext[RGB]{190,190,190}{Shall contain all relevant information respecting to the transformation of variables. The list of variables under each one of the transformations, shall be presented. If not applied explain the reason for that, based on data characteristics.  \textbf{Shall not exceed 500 characters \textit{for each dataset.}}}
+\begin{figure}[H]
+\centering
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_enc1_tmpMVI_NB_KNN_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_enc2_tmpMVI_NB_KNN_recall_eval.png}%
+}
+\caption{Encoding results with different approaches for Flight Cancellation Data}
+\end{figure}
 
 \subsection*{\textit{Missing Value Imputation}}
 % \ctext[RGB]{190,190,190}{Shall contain all relevant information and charts respecting to missing values imputation, such as the choices made and the impact of the different approaches on modelling results. Shall also clearly reveal the approach selected to proceed with the processing. If not applied explain the reason for that, based on data characteristics.  \textbf{Shall not exceed 500 characters.}}
 
 \begin{figure}[H]
 %\centering\includegraphics[scale=0.95]{}
+\centering
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_mvi_simple_NB_KNN_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_mvi_knn_NB_KNN_recall_eval.png}%
+}
+
 \caption{Missing values imputation results with different approaches for Flight Cancellation Data}
+\end{figure}
+
+\subsubsection*{\textit{Best approach for Missing Value Imputation}}
+\begin{figure}[H]
+\centering
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_mvi_simple_nb_MultinomialNB_best_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_mvi_simple_knn_KNN_best_recall_eval.png}%
+}
+\caption{Best Bayes and KNN Models applied to best Missing Value Imputation approach for Flight Cancellation Data}
 \end{figure}
 
 \subsection*{\textit{Outliers Treatment}}
@@ -226,7 +256,30 @@ There are no missing values in the Traffic Accident Dataset.
 
 \begin{figure}[H]
 %\centering\includegraphics[scale=0.95]{}
+\centering
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_drop_NB_KNN_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_trunc_NB_KNN_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_none_NB_KNN_recall_eval.png}%
+}
+
 \caption{Outliers imputation results with different approaches for Flight Cancellation Data}
+\end{figure}
+
+\subsubsection*{\textit{Best approach for Outliers Treatment. No treatment yielded highest recall.}}
+\begin{figure}[H]
+\centering
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_none_nb_MultinomialNB_best_recall_eval.png}%
+}
+\subfloat[]{%
+  \centering\includegraphics[width=0.33\columnwidth]{flight_outliers_none_knn_KNN_best_recall_eval.png}%
+}
+\caption{Best Bayes and KNN Models applied to best Outlier treatment for Flight Cancellation Data}
 \end{figure}
 
 \subsection*{\textit{Scaling}}
