@@ -1,4 +1,5 @@
-from numpy import array, ndarray
+import numpy as np
+from numpy import array, ndarray, argsort
 from matplotlib.pyplot import subplots
 from matplotlib.pyplot import figure, savefig, show, subplots
 from pandas import DataFrame
@@ -7,13 +8,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 from typing import Literal
 
 from dslabs_functions import \
     CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, \
     HEIGHT, run_NB, run_KNN, plot_multibar_chart, \
-    plot_confusion_matrix
+    plot_confusion_matrix, plot_evaluation_results, plot_horizontal_bar_chart
 
 def naive_Bayes_study(
     trnX: ndarray,
@@ -302,7 +303,7 @@ def separate_train_test(
     target: str, 
     test_size: float = 0.3,
     random_state: int = 42
-) -> {DataFrame, DataFrame, DataFrame, DataFrame}:
+):
     df = data.copy()
     
     y = df.pop(target).values
@@ -369,3 +370,449 @@ def evaluate_and_plot(
     axs[1].set_title(f"{file_tag}-{approach} KNN Confusion Matrix")
     savefig(f"../../charts/{lab_folder}/{file_tag}_{approach}_nb_vs_knn_confusion_matrix.png", bbox_inches='tight')
     show()
+
+def get_path_aux(lab_folder: str):
+    if "lab3" in lab_folder:
+        return "../.."
+    elif "lab1" in lab_folder:
+        return ".."
+
+def predict_and_eval(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    best_model: DataFrame,
+    params: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str
+) -> None:
+    prd_trn = best_model.predict(features_train)
+    prd_tst = best_model.predict(features_test)
+    nb_labels = sorted(np.unique(target_train))
+
+    figure()
+    plot_evaluation_results(
+        params,
+        array(target_train),
+        array(prd_trn),
+        array(target_test),
+        array(prd_tst),
+        nb_labels
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_best_{params["metric"]}_eval.png', bbox_inches='tight')
+    show()
+
+def best_model_nb(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    eval_metric: str
+) -> {DataFrame, DataFrame}:
+    figure()
+    nb_best_model, nb_params = naive_Bayes_study(
+        features_train,
+        target_train,
+        features_test,
+        target_test,
+        metric=eval_metric
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{nb_params["name"]}_{nb_params["metric"]}_study.png', bbox_inches='tight')
+    show()
+    return nb_best_model, nb_params
+
+def run_all_nb(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    eval_metric: str,
+):  
+    best_model, params = best_model_nb(
+        features_train, target_train, features_test, target_test, 
+        lab_folder, file_tag, approach,
+        eval_metric = eval_metric
+    ) 
+    predict_and_eval(features_train,target_train, features_test, target_test, 
+        best_model, params, lab_folder, file_tag, approach)                    
+    return best_model, params                    
+
+def best_model_knn(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    k_max: int = 25,
+    lag: int = 2,
+    eval_metric: str = "accuracy"
+) :
+    figure()
+    knn_best_model, knn_params = knn_study(
+        features_train,
+        target_train,
+        features_test,
+        target_test,
+        k_max,
+        lag,
+        metric=eval_metric,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{knn_params["name"]}_{knn_params["metric"]}_study.png', bbox_inches='tight')
+    show()     
+    return knn_best_model, knn_params  
+
+def knn_overfitting(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    params: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    k_max: int,
+    lag: int,
+    eval_metric: str
+):
+    distance = params["params"][1]   # best distance from KNN study, e.g. 'euclidean'
+    kvalues = [i for i in range(1, k_max + 1, lag)]
+
+    y_tst_values = []
+    y_trn_values = []
+    
+    for k in kvalues:
+        clf = KNeighborsClassifier(n_neighbors=k, metric=distance)
+        clf.fit(features_train, target_train)
+        prd_tst_Y = clf.predict(features_test)
+        prd_trn_Y = clf.predict(features_train)
+
+        y_tst_values.append(CLASS_EVAL_METRICS[eval_metric](target_test, prd_tst_Y))
+        y_trn_values.append(CLASS_EVAL_METRICS[eval_metric](target_train, prd_trn_Y))
+                        
+    figure()
+    plot_multiline_chart(
+        kvalues,
+        {"Train": y_trn_values, "Test": y_tst_values},
+        title=f"KNN overfitting study for {distance}",
+        xlabel="K",
+        ylabel=eval_metric,
+        percentage=True,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_overfitting.png', bbox_inches='tight')
+    show()
+
+def run_all_knn(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    k_max: int,
+    lag: int,
+    eval_metric: str
+):  
+    best_model, params = best_model_knn(
+        features_train, target_train, features_test, target_test, 
+        lab_folder, file_tag, approach,
+        k_max=k_max,
+        lag=lag,
+        eval_metric = eval_metric
+    )
+    knn_overfitting(features_train, target_train, features_test, target_test, 
+        params, lab_folder, file_tag, approach,
+        k_max=k_max,
+        lag=lag,
+        eval_metric = eval_metric) 
+    predict_and_eval(features_train,target_train, features_test, target_test, 
+        best_model, params, lab_folder, file_tag, approach)                    
+    return best_model, params                    
+
+def best_model_lr(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    nr_max_iterations: int,
+    lag: int,
+    eval_metric: str
+) :
+    figure()
+    lr_best_model, lr_params = logistic_regression_study(
+        features_train,
+        target_train,
+        features_test,
+        target_test,
+        nr_max_iterations=nr_max_iterations,
+        lag=lag,
+        metric=eval_metric,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{lr_params["name"]}_{lr_params["metric"]}_study.png', bbox_inches='tight')
+    show()     
+    return lr_best_model, lr_params  
+
+def run_all_lr(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,nr_max_iterations: int,
+    lag: int,
+    eval_metric: str
+):  
+    best_model, params = best_model_lr(
+        features_train, target_train, features_test, target_test, 
+        lab_folder, file_tag, approach,
+        nr_max_iterations=nr_max_iterations,
+        lag=lag,
+        eval_metric = eval_metric
+    )
+
+    predict_and_eval(features_train,target_train, features_test, target_test, 
+        best_model, params, lab_folder, file_tag, approach)                    
+    return best_model, params                    
+
+def dt_overfitting(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    params: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    d_max: int,
+    lag: int,
+    eval_metric: str
+):
+    crit = params["params"][0]   # 'entropy' or 'gini'
+    depths = [i for i in range(2, d_max + 1, lag)]
+
+    y_tst_values = []
+    y_trn_values = []
+
+    for d in depths:
+        clf = DecisionTreeClassifier(
+            max_depth=d,
+            criterion=crit,
+            min_impurity_decrease=0,
+            random_state=42,
+        )
+        clf.fit(features_train, target_train)
+        prd_tst_Y = clf.predict(features_test)
+        prd_trn_Y = clf.predict(features_train)
+
+        y_tst_values.append(CLASS_EVAL_METRICS[eval_metric](target_test, prd_tst_Y))
+        y_trn_values.append(CLASS_EVAL_METRICS[eval_metric](target_train, prd_trn_Y))
+
+    figure()
+    plot_multiline_chart(
+        depths,
+        {"Train": y_trn_values, "Test": y_tst_values},
+        title=f"DT overfitting study for {crit}",
+        xlabel="max_depth",
+        ylabel=eval_metric,
+        percentage=True,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_overfitting.png', bbox_inches='tight')
+    show()
+
+def run_all_dt(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    d_max: int,
+    lag: int,
+    eval_metric: str
+):  
+    figure()
+    best_model, params = trees_study(
+        features_train,
+        target_train,
+        features_test,
+        target_test,
+        d_max=d_max,
+        lag=lag,
+        metric=eval_metric,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_study.png', bbox_inches='tight')
+    show()
+    dt_overfitting(features_train, target_train, features_test, target_test, 
+        params, lab_folder, file_tag, approach,
+        d_max=d_max,
+        lag=lag,
+        eval_metric = eval_metric
+    ) 
+    predict_and_eval(features_train,target_train, features_test, target_test, 
+        best_model, params, lab_folder, file_tag, approach)
+    return best_model, params                    
+
+def show_tree_and_importances(
+    features: DataFrame,
+    target: DataFrame, 
+    dt_best_model: DataFrame, 
+    dt_params: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    max_depth2show: int
+):
+    dt_feature_names = list(features.columns)
+
+    dt_class_names = sorted(target.unique())
+
+    figure(figsize=(18, 10))
+    plot_tree(
+        dt_best_model,
+        max_depth=max_depth2show,
+        feature_names=dt_feature_names,
+        class_names=dt_class_names,
+        filled=True,
+        rounded=True,
+        impurity=False,
+        precision=2,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{dt_params["name"]}_{dt_params["metric"]}_tree_depth{max_depth2show}.png', bbox_inches='tight')
+    show()
+
+    importances = dt_best_model.feature_importances_
+
+    indices = argsort(importances)[::-1]
+    dt_vars = list(features.columns)
+    elems = []
+    imp_values = []
+
+    # print ranked list like professor
+    for f in range(len(dt_vars)):
+        feature_name = dt_vars[indices[f]]
+        feature_imp = importances[indices[f]]
+
+        elems.append(feature_name)
+        imp_values.append(feature_imp)
+
+        print(f"{f+1}. {feature_name} ({feature_imp})")
+
+    figure()
+    plot_horizontal_bar_chart(
+        elems,
+        imp_values,
+        title="Decision Tree variables importance",
+        xlabel="importance",
+        ylabel="variables",
+        percentage=True,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{dt_params["name"]}_{dt_params["metric"]}_importance_ranking.png', bbox_inches='tight')
+    show()
+
+def mlp_overfitting(
+    features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    params: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    nr_max_iterations: int,
+    lag: int,
+    eval_metric: str
+):
+    lr_type = params["params"][0]
+    lr = params["params"][1]
+
+    nr_iterations = [i for i in range(lag, nr_max_iterations + 1, lag)]
+
+    y_tst_values = []
+    y_trn_values = []
+    
+    for n in nr_iterations:
+        clf = MLPClassifier(
+            learning_rate=lr_type,
+            learning_rate_init=lr,
+            max_iter=n,
+            activation="logistic",
+            solver="adam",
+            verbose=False,
+            random_state=42,
+        )
+        clf.fit(features_train, target_train)
+        prd_tst_Y = clf.predict(features_test)
+        prd_trn_Y = clf.predict(features_train)
+
+        y_tst_values.append(CLASS_EVAL_METRICS[eval_metric](target_test, prd_tst_Y))
+        y_trn_values.append(CLASS_EVAL_METRICS[eval_metric](target_train, prd_trn_Y))
+
+    figure()
+    plot_multiline_chart(
+        nr_iterations,
+        {"Train": y_trn_values, "Test": y_tst_values},
+        title=f"MLP overfitting study for lr_type={lr_type} and lr={lr}",
+        xlabel="nr_iterations",
+        ylabel=eval_metric,
+        percentage=True,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_overfitting.png', bbox_inches='tight')
+    show()
+
+def run_all_mlp(features_train: DataFrame,
+    target_train: DataFrame,
+    features_test: DataFrame,
+    target_test: DataFrame,
+    lab_folder: str,
+    file_tag: str,
+    approach: str,
+    nr_max_iterations: int,
+    lag: int,
+    eval_metric: str
+):  
+    figure()
+    best_model, params = mlp_study(
+        features_train,
+        target_train,
+        features_test,
+        target_test,
+        nr_max_iterations=nr_max_iterations,
+        lag=lag,
+        metric=eval_metric,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_study.png', bbox_inches='tight')
+    show()
+    
+    mlp_overfitting(features_train, target_train, features_test, target_test, 
+        params, lab_folder, file_tag, approach,
+        nr_max_iterations=nr_max_iterations,
+        lag=lag,
+        eval_metric = eval_metric
+    )
+    
+    figure()
+    plot_line_chart(
+        arange(len(best_model.loss_curve_)),
+        best_model.loss_curve_,
+        title="Loss curve for MLP best model training",
+        xlabel="iterations",
+        ylabel="loss",
+        percentage=False,
+    )
+    savefig(f'{get_path_aux(lab_folder)}/charts/{lab_folder}/{file_tag}_{approach}_{params["name"]}_{params["metric"]}_loss_curve.png', bbox_inches='tight')
+    show()
+
+    predict_and_eval(features_train,target_train, features_test, target_test, 
+        best_model, params, lab_folder, file_tag, approach)
+    return best_model, params                    
+
