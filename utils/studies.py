@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import array, ndarray, argsort
+from numpy import array, ndarray, argsort, arange
 from matplotlib.pyplot import subplots
 from matplotlib.pyplot import figure, savefig, show, subplots
 from pandas import DataFrame
@@ -13,7 +13,7 @@ from typing import Literal
 
 from dslabs_functions import \
     CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, \
-    HEIGHT, run_NB, run_KNN, plot_multibar_chart, \
+    HEIGHT, run_NB, run_KNN, plot_multibar_chart, plot_line_chart, \
     plot_confusion_matrix, plot_evaluation_results, plot_horizontal_bar_chart
 
 def naive_Bayes_study(
@@ -330,7 +330,7 @@ def evaluate_approach(
     
     # Split the data
     trnX, tstX, trnY, tstY = train_test_split(
-        X, y, test_size=test_size, random_state=random_state
+        X, y, test_size=test_size, random_state=random_state, stratify=target
     )
     
     eval: dict[str, list] = {}
@@ -531,7 +531,8 @@ def run_all_knn(features_train: DataFrame,
         params, lab_folder, file_tag, approach,
         k_max=k_max,
         lag=lag,
-        eval_metric = eval_metric) 
+        eval_metric = eval_metric
+    ) 
     predict_and_eval(features_train,target_train, features_test, target_test, 
         best_model, params, lab_folder, file_tag, approach)                    
     return best_model, params                    
