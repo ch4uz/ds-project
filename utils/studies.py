@@ -37,17 +37,21 @@ def naive_Bayes_study(
     best_params: dict = {"name": "", "metric": metric, "params": ()}
     best_performance = 0
     for clf in estimators:
-        xvalues.append(clf)
-        estimators[clf].fit(trnX, trnY)
-        prdY: array = estimators[clf].predict(tstX)
-        eval: float = CLASS_EVAL_METRICS[metric](tstY, prdY)
-        if eval - best_performance > DELTA_IMPROVE:
-            best_performance: float = eval
-            best_params["name"] = clf
-            best_params[metric] = eval
-            best_model = estimators[clf]
-        yvalues.append(eval)
-        # print(f'NB {clf}')
+        try:
+            estimators[clf].fit(trnX, trnY)
+            xvalues.append(clf)
+            prdY: array = estimators[clf].predict(tstX)
+            eval: float = CLASS_EVAL_METRICS[metric](tstY, prdY)
+            if eval - best_performance > DELTA_IMPROVE:
+                best_performance: float = eval
+                best_params["name"] = clf
+                best_params[metric] = eval
+                best_model = estimators[clf]
+            yvalues.append(eval)
+            # print(f'NB {clf}')
+        except Exception:
+            print(f"Couldn't run {clf}")
+            continue
     plot_bar_chart(
         xvalues,
         yvalues,
