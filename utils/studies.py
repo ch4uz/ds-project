@@ -380,6 +380,24 @@ def separate_train_test(
     
     return trnX, tstX, trnY, tstY
 
+# Made for flight dataset where shuffling is not desired
+def separate_train_test_no_shuffle(
+    data: DataFrame, 
+    target: str, 
+    test_size: float = 0.3,
+):
+    df = data.copy()
+    
+    y = df.pop(target)
+    X = df
+    
+    # Split the data
+    split_index = int((1 - test_size) * len(df))
+    trnX, tstX = X.iloc[:split_index].copy(), X.iloc[split_index:].copy()
+    trnY, tstY = y.iloc[:split_index].copy(), y.iloc[split_index:].copy()
+    
+    return trnX, tstX, trnY, tstY
+
 def evaluate_approach(
     data: DataFrame, 
     target: str = "class", 
@@ -396,6 +414,35 @@ def evaluate_approach(
     trnX, tstX, trnY, tstY = train_test_split(
         X, y, test_size=test_size, random_state=random_state, stratify=y
     )
+    
+    eval: dict[str, list] = {}
+
+    eval_NB: dict[str, float] = run_NB(trnX, trnY, tstX, tstY, metric=metric)
+    eval_KNN: dict[str, float] = run_KNN(trnX, trnY, tstX, tstY, metric=metric)
+    
+    if eval_NB != {} and eval_KNN != {}:
+        for met in CLASS_EVAL_METRICS:
+            eval[met] = [eval_NB[met], eval_KNN[met]]
+        eval["confusion_matrix"] = [eval_NB["confusion_matrix"], eval_KNN["confusion_matrix"]]
+    
+    return eval
+
+# Made for flight dataset where shuffling is not desired
+def evaluate_approach_no_shuffle(
+    data: DataFrame, 
+    target: str = "class", 
+    metric: str = "recall",
+    test_size: float = 0.3,
+) -> dict[str, list]:
+    df = data.copy()
+    
+    y = df.pop(target).values
+    X = df.values
+    
+    # Split the data
+    split_index = int((1 - test_size) * len(df))
+    trnX, tstX = X[:split_index], X[split_index:]
+    trnY, tstY = y[:split_index], y[split_index:]
     
     eval: dict[str, list] = {}
 
