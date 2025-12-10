@@ -1,8 +1,12 @@
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+from matplotlib.gridspec import GridSpec
 import numpy as np
 from numpy import array, ndarray, argsort, arange, std
 from matplotlib.pyplot import subplots
 from matplotlib.pyplot import figure, savefig, show, subplots
 from pandas import DataFrame
+from sklearn.discriminant_analysis import StandardScaler
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -12,11 +16,15 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from typing import Literal
+from pandas import Series
+from math import sqrt
 
 from dslabs_functions import \
     CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, \
     HEIGHT, run_NB, run_KNN, plot_multibar_chart, plot_line_chart, \
-    plot_confusion_matrix, plot_evaluation_results, plot_horizontal_bar_chart
+    plot_confusion_matrix, plot_evaluation_results, plot_horizontal_bar_chart, \
+    FORECAST_MEASURES, adfuller, PAST_COLOR, FUTURE_COLOR, PRED_PAST_COLOR, \
+    PRED_FUTURE_COLOR, set_chart_labels, DecomposeResult, seasonal_decompose
 
 def naive_Bayes_study(
     trnX: ndarray, 
@@ -1408,3 +1416,134 @@ def run_all_gb(
         best_model, params, lab_folder, file_tag, approach
     )
     return best_model, params  
+
+def plot_ts_multivariate_chart(data: DataFrame, title: str) -> list[Axes]:
+    fig: Figure
+    axs: list[Axes]
+    fig, axs = subplots(data.shape[1], 1, figsize=(3 * HEIGHT, HEIGHT / 2 * data.shape[1]))
+    fig.suptitle(title)
+
+    for i in range(data.shape[1]):
+        col: str = data.columns[i]
+        plot_line_chart(
+            data[col].index.to_list(),
+            data[col].to_list(),
+            ax=axs[i],
+            xlabel=data.index.name,
+            ylabel=col,
+        )
+    return axs
+
+def get_lagged_series(series: Series, max_lag: int, delta: int = 1):
+    lagged_series: dict = {"original": series, "lag 1": series.shift(1)}
+    for i in range(delta, max_lag + 1, delta):
+        lagged_series[f"lag {i}"] = series.shift(i)
+    return lagged_series
+
+def autocorrelation_study(series: Series, max_lag: int, delta: int = 1):
+    k: int = int(max_lag / delta)
+    fig = figure(figsize=(4 * HEIGHT, 2 * HEIGHT), constrained_layout=True)
+    gs = GridSpec(2, k, figure=fig)
+
+    series_values: list = series.tolist()
+    for i in range(1, k + 1):
+        ax = fig.add_subplot(gs[0, i - 1])
+        lag = i * delta
+        ax.scatter(series.shift(lag).tolist(), series_values)
+        ax.set_xlabel(f"lag {lag}")
+        ax.set_ylabel("original")
+    ax = fig.add_subplot(gs[1, :])
+    ax.acorr(series, maxlags=max_lag)
+    ax.set_title("Autocorrelation")
+    ax.set_xlabel("Lags")
+    return
+
+def plot_components(
+    series: Series,
+    title: str = "",
+    x_label: str = "time",
+    y_label: str = "",
+) -> list[Axes]:
+    decomposition: DecomposeResult = seasonal_decompose(series, model="add")
+    components: dict = {
+        "observed": series,
+        "trend": decomposition.trend,
+        "seasonal": decomposition.seasonal,
+        "residual": decomposition.resid,
+    }
+    rows: int = len(components)
+    fig: Figure
+    axs: list[Axes]
+    fig, axs = subplots(rows, 1, figsize=(3 * HEIGHT, rows * HEIGHT))
+    fig.suptitle(f"{title}")
+    i: int = 0
+    for key in components:
+        set_chart_labels(axs[i], title=key, xlabel=x_label, ylabel=y_label)
+        axs[i].plot(components[key])
+        i += 1
+    return axs
+
+def eval_stationarity(series: Series) -> bool:
+    result = adfuller(series)
+    print(f"ADF Statistic: {result[0]:.3f}")
+    print(f"p-value: {result[1]:.3f}")
+    print("Critical Values:")
+    for key, value in result[4].items():
+        print(f"\t{key}: {value:.3f}")
+    return result[1] <= 0.05
+
+def scale_all_dataframe(data: DataFrame) -> DataFrame:
+    vars: list[str] = data.columns.to_list()
+    transf: StandardScaler = StandardScaler().fit(data)
+    df = DataFrame(transf.transform(data), index=data.index)
+    df.columns = vars
+    return df
+
+def series_train_test_split(data: Series, trn_pct: float = 0.90) -> tuple[Series, Series]:
+    trn_size: int = int(len(data) * trn_pct)
+    df_cp: Series = data.copy()
+    train: Series = df_cp.iloc[:trn_size, :]
+    test: Series = df_cp.iloc[trn_size:]
+    return train, test
+
+def plot_forecasting_series(
+    trn: Series,
+    tst: Series,
+    prd_tst: Series,
+    title: str = "",
+    xlabel: str = "time",
+    ylabel: str = "",
+) -> list[Axes]:
+    fig, ax = subplots(1, 1, figsize=(4 * HEIGHT, HEIGHT), squeeze=True)
+    fig.suptitle(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.plot(trn.index, trn.values, label="train", color=PAST_COLOR)
+    ax.plot(tst.index, tst.values, label="test", color=FUTURE_COLOR)
+    ax.plot(prd_tst.index, prd_tst.values, "--", label="test prediction", color=PRED_FUTURE_COLOR)
+    ax.legend(prop={"size": 5})
+
+    return ax
+
+def plot_forecasting_eval(trn: Series, tst: Series, prd_trn: Series, prd_tst: Series, title: str = "") -> list[Axes]:
+    ev1: dict = {
+        "RMSE": [sqrt(FORECAST_MEASURES["MSE"](trn, prd_trn)), sqrt(FORECAST_MEASURES["MSE"](tst, prd_tst))],
+        "MAE": [FORECAST_MEASURES["MAE"](trn, prd_trn), FORECAST_MEASURES["MAE"](tst, prd_tst)],
+    }
+    ev2: dict = {
+        "MAPE": [FORECAST_MEASURES["MAPE"](trn, prd_trn), FORECAST_MEASURES["MAPE"](tst, prd_tst)],
+        "R2": [FORECAST_MEASURES["R2"](trn, prd_trn), FORECAST_MEASURES["R2"](tst, prd_tst)],
+    }
+
+    # print(eval1, eval2)
+    fig, axs = subplots(1, 2, figsize=(1.5 * HEIGHT, 0.75 * HEIGHT), squeeze=True)
+    fig.suptitle(title)
+    plot_multibar_chart(["train", "test"], ev1, ax=axs[0], title="Scale-dependent error", percentage=False)
+    plot_multibar_chart(["train", "test"], ev2, ax=axs[1], title="Percentage error", percentage=True)
+    return axs
+
+
+
+
+
+
