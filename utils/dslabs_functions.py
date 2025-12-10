@@ -288,7 +288,10 @@ def get_variable_types(df: DataFrame) -> dict[str, list]:
 
     nr_values: Series = df.nunique(axis=0, dropna=True)
     for c in df.columns:
-        if 2 == nr_values[c]:
+        # Check for datetime types FIRST before checking numeric
+        if df[c].dtype.name.startswith('datetime'):
+            variable_types["date"].append(c)
+        elif 2 == nr_values[c]:
             variable_types["binary"].append(c)
             df[c].astype("bool")
         else:
