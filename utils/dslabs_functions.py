@@ -822,7 +822,7 @@ def plot_components(
         set_chart_labels(axs[i], title=key, xlabel=x_label, ylabel=y_label)
         axs[i].plot(components[key])
         i += 1
-    return axs
+    return fig, axs
 
 
 # ---------------------------------------
