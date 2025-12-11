@@ -1,0 +1,303 @@
+\documentclass[10pt]{extarticle}
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage[onehalfspacing]{setspace}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.2em}
+\font\myfont=cmr12 at 26pt
+\usepackage{anyfontsize}
+\usepackage{tabularx}
+\usepackage{multirow}
+\pagenumbering{arabic} 
+\usepackage{soul}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{blindtext}
+\usepackage{titling}
+\setlength{\droptitle}{-14em}   % This is your set screw
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{eso-pic}
+\graphicspath{ {../images/} {../../forecasting/traffic/charts/profiling} {../../forecasting/traffic/charts/preparation} {../../forecasting/inflation-rate/charts/lab5/profiling} {../../forecasting/inflation-rate/charts/lab5/preparation/aggregation} {../../forecasting/inflation-rate/charts/lab5/preparation/differential} }
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage[section]{placeins}
+\geometry{margin=2cm, bmargin=2cm, tmargin=3cm}
+
+\newcommand{\ctext}[3][RGB]{%
+  \begingroup
+  \definecolor{hlcolor}{#1}{#2}\sethlcolor{hlcolor}%
+  \hl{#3}%
+  \endgroup
+}
+
+
+\begin{document}
+
+
+\AddToShipoutPictureBG*{
+\AtPageUpperLeft{
+\hspace{19.5cm}
+\raisebox{-2.5cm}{\makebox[0pt][r]{\fontsize{36}{1cm}\selectfont DS 2025\par}}}}
+
+\AddToShipoutPictureBG*{
+\AtPageUpperLeft{
+\hspace{6.5cm}
+\raisebox{-3.5cm}{
+\makebox[0pt][r]{ 
+\includegraphics[scale=0.95]{tecnico_logo.jpg}\\[3cm]}}}}
+
+
+\title{{\myfont Data Science Lab 5}}  % Title
+\setlength{\droptitle}{1cm}
+
+\date{\vspace{-9ex}} % Date for the report, skipped and used to adjust height
+\maketitle % Insert the title, author and date
+\begin{center}
+    %\setlength\extrarowheight{7pt}
+    \begin{tabular}{ |l|l l|l| }
+        \hline
+        \multirow{4}{6em}{\textbf{Team nr:} 2} & \textbf{Student 1:} \r{A}mund Grimstad & \textbf{IST nr:} 1116675\\
+        & \textbf{Student 2:} Arthur de Arruda Chau & \textbf{IST nr:} 1116090 \\
+        & \textbf{Student 3:} Benjamin Raymond Kuhn & \textbf{IST nr:} 1115778 \\
+        & \textbf{Student 4:} João Rafael Freitas Lourenço & \textbf{IST nr:} 425699 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\begin{center}
+	\section*{\fontsize{0.75cm}{1cm}\selectfont TIME SERIES ANALYSIS}
+\end{center}
+
+\section*{Traffic Time Series}
+
+\subsection*{DATA PROFILING}
+
+\subsection*{\textit{Data Dimensionality and Granularity}}
+%\ctext[RGB]{190,190,190}{May be used to identify the most atomic granularity and two other different granularities to consider.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[width=0.5\textwidth]{flight_best_MLP_best_recall_eval.png}
+\caption{Traffic Time Series at the most granular detail}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Traffic Time Series at the second chosen granularity}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Traffic Time Series at the third chosen granularity}
+\end{figure}
+
+\subsection*{\textit{Data Distribution}}
+%\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series distribution.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Boxplot(s) for Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Histogram(s) for Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Autocorrelation lag-plots for original Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Autocorrelation correlogram for original Traffic Time Series}
+\end{figure}
+
+\subsection*{\textit{Data Stationarity}}
+%\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series stationarity.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Components study for Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Stationarity study for Traffic Time Series}
+\end{figure}
+
+\section*{DATA TRANSFORMATION}
+
+\subsection*{\textit{Aggregation}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying three different aggregations over both datasets, and identifying the granularity chosen to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after different aggregations on Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after different aggregations on Traffic Time Series}
+\end{figure}
+
+\subsection*{\textit{Smoothing}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying smoothing transformations over both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after different smoothing parameterisations on Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after different smoothing parameterisations on Traffic Time Series}
+\end{figure}
+
+\subsection*{\textit{Differentiation}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying two consecutive differentiation of both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after first and second differentiation of Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after first and second differentiation of Traffic Time Series}
+\end{figure}
+
+\subsection*{\textit{Other transformations (optional)}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying other transformations over both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after applying other transformations over Traffic Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after applying other transformations over Traffic Time Series}
+\end{figure}
+
+
+
+
+\section*{Inflation Rate Time Series}
+
+\subsection*{DATA PROFILING}
+
+\subsection*{\textit{Data Dimensionality and Granularity}}
+%\ctext[RGB]{190,190,190}{May be used to identify the most atomic granularity and two other different granularities to consider.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[width=0.5\textwidth]{flight_best_MLP_best_recall_eval.png}
+\caption{Inflation Rate Time Series at the most granular detail}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Inflation Rate Time Series at the second chosen granularity}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Inflation Rate Time Series at the third chosen granularity}
+\end{figure}
+
+\subsection*{\textit{Data Distribution}}
+%\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series distribution.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Boxplot(s) for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Histogram(s) for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Autocorrelation lag-plots for original Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Autocorrelation correlogram for original Inflation Rate Time Series}
+\end{figure}
+
+\subsection*{\textit{Data Stationarity}}
+%\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series stationarity.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Components study for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Stationarity study for Inflation Rate Time Series}
+\end{figure}
+
+\section*{DATA TRANSFORMATION}
+
+\subsection*{\textit{Aggregation}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying three different aggregations over both datasets, and identifying the granularity chosen to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after different aggregations on Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after different aggregations on Inflation Rate Time Series}
+\end{figure}
+
+\subsection*{\textit{Smoothing}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying smoothing transformations over both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after different smoothing parameterisations on Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after different smoothing parameterisations on Inflation Rate Time Series}
+\end{figure}
+
+\subsection*{\textit{Differentiation}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying two consecutive differentiation of both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after first and second differentiation of Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after first and second differentiation of Inflation Rate Time Series}
+\end{figure}
+
+\subsection*{\textit{Other transformations (optional)}}
+%\ctext[RGB]{190,190,190}{Shall describe the results of applying other transformations over both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 500 characters.}}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting plots after applying other transformations over Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+%\centering\includegraphics[scale=0.95]{}
+\caption{Forecasting results after applying other transformations over Inflation Rate Time Series}
+\end{figure}
+
+\end{document}
