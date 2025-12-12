@@ -257,27 +257,100 @@
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying three different aggregations over both datasets, and identifying the granularity chosen to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting plots after different aggregations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_persistence_real_3M_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_linear_regression_3M_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Quarterly
+         Inflation Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting results after different aggregations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_persistence_real_3M_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_linear_regression_3M_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Quarterly
+         Inflation Aggregation}}
 \end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_persistence_real_6M_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_linear_regression_6M_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Semi-Annual
+         Inflation Aggregation}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_persistence_real_6M_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_linear_regression_6M_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Semi-Annual
+         Inflation Aggregation}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_persistence_real_A_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Aggregation_linear_regression_A_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Aggregation}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_persistence_real_A_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Aggregation_linear_regression_A_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Aggregation}}
+\end{figure}
+
+For all aggregation techniques, the Linear Regression model yields a lower RMSE than the 
+Persisent Realist Model for the test set. Among the Linear Regression models, the Annual 
+aggregation yields the lowest RSME for the test set (~1.6).
 
 \subsection*{\textit{Differentiation}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying two consecutive differentiation of both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting plots after first and second differentiation of Inflation Rate Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff1_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff1_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation (1st Order)}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting plots after first and second differentiation of Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff1_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff1_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation (1st Order)}}
 \end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff2_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff2_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation (2nd Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff2_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation (2nd Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff_lag2_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff_lag2_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation with Lag 2}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff_lag2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff_lag2_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Differentiation with Lag 2}}
+\end{figure}
+
+For diff\_1 and diff\_2, the Linear Regression Model yields a lower RMSE for the test set than the 
+Persistent Realist models. For the diff\_lag2 treatment, the Persistent Realist has a lower RMSE than 
+the Linear Regression Model. But overall, the best model, a Linear Regression Model trained on the diff\_1 
+treatment, is worse than the best model without differential treatment. So, we do not differentiate.
 
 \subsection*{\textit{Smoothing}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying different smoothing tecniques to the training set, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
