@@ -20,7 +20,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{eso-pic}
-\graphicspath{ {../images/} {../../forecasting/traffic/charts/profiling} {../../forecasting/traffic/charts/preparation} {../../forecasting/inflation-rate/charts/lab5/profiling} {../../forecasting/inflation-rate/charts/lab5/preparation/aggregation} {../../forecasting/inflation-rate/charts/lab5/preparation/differential} }
+\graphicspath{ {../images/} {../../forecasting/traffic/charts/profiling} {../../forecasting/traffic/charts/preparation} {../../forecasting/inflation-rate/charts/lab5/profiling} {../../forecasting/inflation-rate/charts/lab5/preparation/aggregation} {../../forecasting/inflation-rate/charts/lab5/preparation/differential} {../../forecasting/inflation-rate/charts/lab5/preparation/smoothing} {../../forecasting/inflation-rate/charts/lab5/preparation/scaling}}
 \usepackage{subcaption}
 \usepackage{geometry}
 \usepackage{hyperref}
@@ -357,26 +357,96 @@ do not differentiate.
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying different smoothing tecniques to the training set, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting plots after different smoothing parameterisations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_smooth_2_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_smooth_2_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=2)}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting results after different smoothing parameterisations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_smooth_2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_smooth_2_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=2)}}
 \end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_smooth_3_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_smooth_3_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=3)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_smooth_3_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_smooth_3_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=3)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_smooth_4_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_smooth_4_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=4)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_smooth_4_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_smooth_4_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Smoothing (windowSize=4)}}
+\end{figure}
+
+Choosing the smoothing with windowSize=2 since the Persistence Scored better than the best after 
+aggregation and differentiation.
 
 \subsection*{\textit{Scaling}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying different scaling techniques to both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting plots after different scaling parameterisations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_RobustScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_RobustScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - RobustScaler}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[scale=0.95]{}
-\caption{Forecasting results after different scaling parameterisations on Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_RobustScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_RobustScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - RobustScaler}}
 \end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_MinMaxScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_MinMaxScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - MinMaxScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_MinMaxScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_MinMaxScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - MinMaxScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_StandardScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_StandardScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - StandardScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_StandardScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_StandardScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Annual
+         Inflation Scaling - StandardScaler}}
+\end{figure}
+
+The best results are achieved with MinMaxScaler combined with the Persistence Realist model, due to 
+its lowest Test MAE (0.35) and significantly better Test MAPE (0.61).
 
 \end{document}
