@@ -74,8 +74,6 @@
 \end{center}
 
 
-
-
 \section*{Traffic Time Series}
 
 \subsection*{DATA PROFILING}
@@ -84,30 +82,35 @@
 %\ctext[RGB]{190,190,190}{May be used to identify the most atomic granularity and two other different granularities to consider.  \textbf{Shall not exceed 500 characters.}}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_granularity.png}
-\caption{Traffic Time Series at five different granularities}
+\centering\includegraphics[width=0.9\textwidth]{traffic_dimensionality.png}
+\caption{Traffic Time Series dimensionality over time}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.9\textwidth]{traffic_granularity.png}
+\caption{Traffic Time Series at three different granularities}
 \end{figure}
 
 \subsection*{\textit{Data Distribution}}
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series distribution.  \textbf{Shall not exceed 500 characters.}}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_distribution_5number_summary.png}
+\centering\includegraphics[width=0.8\textwidth]{traffic_distribution_5number_summary.png}
 \caption{Boxplot(s) for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_distribution_variables_histogram}
+\centering\includegraphics[width=1.0\textwidth]{traffic_distribution_variables_histogram.png}
 \caption{Histogram(s) for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_dimensionality_autocorrelation_plot.png}
+\centering\includegraphics[width=0.8\textwidth]{traffic_dimensionality_autocorrelation_plot.png}
 \caption{Autocorrelation lag-plots for original Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_dimensionality_autocorrelation_study.png}
+\centering\includegraphics[width=0.9\textwidth]{traffic_dimensionality_autocorrelation_study.png}
 \caption{Autocorrelation correlogram for original Traffic Time Series}
 \end{figure}
 
@@ -115,25 +118,19 @@
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series stationarity.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_seasonality_components.png}
+\centering\includegraphics[width=0.9\textwidth]{traffic_seasonality_components.png}
 \caption{Components study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_stationarity_study.png}
+\centering\includegraphics[width=0.9\textwidth]{traffic_stationarity_study.png}
 \caption{Stationarity study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.5\textwidth]{traffic_stationarity_study_bins.png}
+\centering\includegraphics[width=0.9\textwidth]{traffic_stationarity_study_bins.png}
 \caption{Stationarity study with bins for Traffic Time Series}
 \end{figure}
-
-\begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Augmented Dickey-Fuller test results for Traffic Time Series}
-\end{figure}
-
 
 \section*{DATA TRANSFORMATION}
 
@@ -143,112 +140,237 @@
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{traffic_persistence_real_H_forecast.png}
 \centering\includegraphics[width=0.8\textwidth]{traffic_linear_regression_H_forecast.png}
-\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{hourly
-         Traffic Aggregation}}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_persistence_real_H_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_linear_regression_H_eval.png}
-\caption{Performance of Persistence Realist and Linear Regression on \textbf{hourly
-         Traffic Aggregation}}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{traffic_persistence_real_3H_forecast.png}
 \centering\includegraphics[width=0.8\textwidth]{traffic_linear_regression_3H_forecast.png}
-\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{3hourly
-         Traffic Aggregation}}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{3-Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_persistence_real_3H_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_linear_regression_3H_eval.png}
-\caption{Performance of Persistence Realist and Linear Regression on \textbf{3hourly
-         Traffic Aggregation}}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{3-Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{traffic_persistence_real_6H_forecast.png}
 \centering\includegraphics[width=0.8\textwidth]{traffic_linear_regression_6H_forecast.png}
-\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{6hourly
-         Traffic Aggregation}}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{6-Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_persistence_real_6H_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_linear_regression_6H_eval.png}
-\caption{Performance of Persistence Realist and Linear Regression on \textbf{6hourly
-         Traffic Aggregation}}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{6-Hourly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{traffic_persistence_real_D_forecast.png}
 \centering\includegraphics[width=0.8\textwidth]{traffic_linear_regression_D_forecast.png}
-\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{daily
-         Traffic Aggregation}}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Daily Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_persistence_real_D_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_linear_regression_D_eval.png}
-\caption{Performance of Persistence Realist and Linear Regression on \textbf{daily
-         Traffic Aggregation}}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Daily Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{traffic_persistence_real_W_forecast.png}
 \centering\includegraphics[width=0.8\textwidth]{traffic_linear_regression_W_forecast.png}
-\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{weekly
-         Traffic Aggregation}}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Weekly Traffic Aggregation}}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_persistence_real_W_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_linear_regression_W_eval.png}
-\caption{Performance of Persistence Realist and Linear Regression on \textbf{weekly
-         Traffic Aggregation}}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Weekly Traffic Aggregation}}
 \end{figure}
 
+\begin{figure}[H]
+\centering\includegraphics[width=0.9\textwidth]{traffic_model_comparison.png}
+\caption{Model comparison for different Traffic aggregation strategies}
+\end{figure}
 
 \subsection*{\textit{Differentiation}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying two consecutive differentiation of both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting plots after first and second differentiation of Traffic Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_baseline_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_baseline_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic Baseline (No Differentiation)}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting plots after first and second differentiation of Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_baseline_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_baseline_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic Baseline (No Differentiation)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff1_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff1_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic Differentiation (1st Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff1_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff1_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic Differentiation (1st Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff2_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff2_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic Differentiation (2nd Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff2_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic Differentiation (2nd Order)}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_persistence_real_diff_lag2_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Differentiation_linear_regression_diff_lag2_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic Differentiation with Lag 2}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_persistence_real_diff_lag2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Differentiation_linear_regression_diff_lag2_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic Differentiation with Lag 2}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.9\textwidth]{Differentiation_model_comparison.png}
+\caption{Model comparison for different Traffic differentiation strategies}
 \end{figure}
 
 \subsection*{\textit{Smoothing}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying different smoothing tecniques to the training set, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting plots after different smoothing parameterisations on Traffic Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_size5_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_size5_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 5}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting results after different smoothing parameterisations on Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_size5_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_size5_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 5}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_size10_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_size10_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 10}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_size10_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_size10_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 10}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_size15_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_size15_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 15}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_size15_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_size15_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 15}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_persistence_real_size25_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Smoothing_linear_regression_size25_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 25}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_persistence_real_size25_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Smoothing_linear_regression_size25_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with Smoothing Size 25}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.9\textwidth]{Smoothing_model_comparison.png}
+\caption{Model comparison for different Traffic smoothing strategies}
 \end{figure}
 
 \subsection*{\textit{Scaling}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying different scaling techniques to both datasets, and identifying the best result to proceed.  \textbf{Shall not exceed 300 characters.}}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting plots after different scaling parameterisations on Traffic Time Series}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_None_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_None_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with No Scaling}}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.5\textwidth]{}
-\caption{Forecasting results after different scaling parameterisations on Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_None_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_None_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with No Scaling}}
 \end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_StandardScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_StandardScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with StandardScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_StandardScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_StandardScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with StandardScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_MinMaxScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_MinMaxScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with MinMaxScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_MinMaxScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_MinMaxScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with MinMaxScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{Scaling_persistence_real_RobustScaler_forecast.png}
+\centering\includegraphics[width=0.8\textwidth]{Scaling_linear_regression_RobustScaler_forecast.png}
+\caption{Forecasting predictions from Persistence Realist and Linear Regression on \textbf{Traffic with RobustScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{Scaling_persistence_real_RobustScaler_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{Scaling_linear_regression_RobustScaler_eval.png}
+\caption{Performance of Persistence Realist and Linear Regression on \textbf{Traffic with RobustScaler}}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.9\textwidth]{Scaling_model_comparison.png}
+\caption{Model comparison for different Traffic scaling strategies}
+\end{figure}
+
+
 
 
 
