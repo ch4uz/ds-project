@@ -1,3 +1,4 @@
+from math import sqrt
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from matplotlib.gridspec import GridSpec
@@ -5,7 +6,7 @@ import numpy as np
 from numpy import array, ndarray, argsort, arange, std
 from matplotlib.pyplot import subplots
 from matplotlib.pyplot import figure, savefig, show, subplots
-from pandas import DataFrame, concat
+from pandas import DataFrame, concat, Series
 from sklearn.discriminant_analysis import StandardScaler
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -16,8 +17,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from typing import Literal
-from pandas import Series
-from math import sqrt
 
 from dslabs_functions import \
     CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_bar_chart, plot_multiline_chart, \
@@ -1558,9 +1557,5 @@ def plot_forecasting_eval(trn: Series, tst: Series, prd_trn: Series, prd_tst: Se
     plot_multibar_chart(["train", "test"], ev1, ax=axs[0], title="Scale-dependent error", percentage=False)
     plot_multibar_chart(["train", "test"], ev2, ax=axs[1], title="Percentage error", percentage=True)
     return axs
-
-
-
-
 
 
