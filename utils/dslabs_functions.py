@@ -38,6 +38,7 @@ from torch import no_grad, tensor
 from torch.nn import LSTM, Linear, Module, MSELoss
 from torch.optim import Adam
 from torch.utils.data import DataLoader, TensorDataset
+from copy import deepcopy
 
 from config import (
     ACTIVE_COLORS,
@@ -1160,6 +1161,18 @@ def prepare_dataset_for_lstm(series, seq_length: int = 4):
         setY.append(future)
     return tensor(setX), tensor(setY)
 
+def prepare_dataset_for_lstm_inflation(series, seq_length: int = 4):
+    setX: list = []
+    setY: list = []
+    for i in range(len(series) - seq_length):
+        past = series[i : i + seq_length]
+        future = series[i + seq_length]
+        setX.append(past)
+        setY.append([future])
+    X = tensor(setX).float().unsqueeze(-1)
+    Y = tensor(setY).float()
+    return X, Y
+
 
 class DS_LSTM(Module):
     def __init__(self, train, input_size: int = 1, hidden_size: int = 50, num_layers: int = 1, length: int = 4):
@@ -1191,6 +1204,40 @@ class DS_LSTM(Module):
         with no_grad():
             y_pred = self(X)
         return y_pred[:, -1, :]
+    
+
+class DS_LSTM_Inflation(Module):
+    def __init__(self, train, input_size: int = 1, hidden_size: int = 50, num_layers: int = 1, length: int = 4):
+        super().__init__()
+        self.lstm = LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
+        self.linear = Linear(hidden_size, 1)
+        self.optimizer = Adam(self.parameters())
+        self.loss_fn = MSELoss()
+
+        trnX, trnY = prepare_dataset_for_lstm_inflation(train, seq_length=length)
+        self.loader = DataLoader(TensorDataset(trnX, trnY), shuffle=True, batch_size=max(1, len(train) // 10))
+
+    def forward(self, x):
+        x, _ = self.lstm(x)
+        x = self.linear(x[:, -1, :])
+        return x
+
+    def fit(self):
+        self.train()
+        for batchX, batchY in self.loader:
+            y_pred = self(batchX)
+            loss = self.loss_fn(y_pred, batchY)
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
+        return loss
+
+    def predict(self, X):
+        with no_grad():
+            y_pred = self(X)
+        return y_pred
+
+
     
 def lstm_study(train, test, nr_episodes: int = 1000, measure: str = "R2"):
     sequence_size = [2, 4, 8]
@@ -1236,5 +1283,66 @@ def lstm_study(train, test, nr_episodes: int = 1000, measure: str = "R2"):
         )
     print(
         f'LSTM best results achieved with length={best_params["params"][0]} hidden_units={best_params["params"][1]} and nr_episodes={best_params["params"][2]}) ==> measure={best_performance:.2f}'
+    )
+    return best_model, best_params
+
+def lstm_study_inflation(train, test, nr_episodes: int = 1000, measure: str = "R2"):
+    sequence_size = [1, 2]
+    nr_hidden_units = [25, 50, 100]
+
+    step: int = nr_episodes // 10
+    episodes = [1] + list(range(0, nr_episodes + 1, step))[1:]
+    percentage = measure == "MAPE"
+
+    minimize = measure in ("MAPE", "MAE", "MSE", "RMSE")
+    best_model = None
+    best_params: dict = {"name": "LSTM", "metric": measure, "params": ()}
+    best_performance: float = float("inf") if minimize else -100000
+
+    _, axs = subplots(1, len(sequence_size), figsize=(len(sequence_size) * HEIGHT, HEIGHT))
+
+    test_lstm = test.astype("float32")
+
+    for i in range(len(sequence_size)):
+        length = sequence_size[i]
+        tstX, tstY = prepare_dataset_for_lstm_inflation(test_lstm, seq_length=length)
+
+        values = {}
+        for hidden in nr_hidden_units:
+            yvalues = []
+            model = DS_LSTM_Inflation(train, hidden_size=hidden, length=length)
+            for n in range(0, nr_episodes + 1):
+                model.fit()
+                if n % step == 0:
+                    prd_tst = model.predict(tstX).detach().cpu().numpy().ravel()
+                    eval: float = FORECAST_MEASURES[measure](test_lstm[length:], prd_tst)
+                    print(f"seq length={length} hidden_units={hidden} nr_episodes={n}", eval)
+
+                    if minimize:
+                        if eval < best_performance and abs(eval - best_performance) > DELTA_IMPROVE:
+                            best_performance = eval
+                            best_params["params"] = (length, hidden, n)
+                            best_model = deepcopy(model)
+                    else:
+                        if eval > best_performance and abs(eval - best_performance) > DELTA_IMPROVE:
+                            best_performance = eval
+                            best_params["params"] = (length, hidden, n)
+                            best_model = deepcopy(model)
+
+                    yvalues.append(eval)
+            values[hidden] = yvalues
+
+        plot_multiline_chart(
+            episodes,
+            values,
+            ax=axs[i],
+            title=f"LSTM seq length={length} ({measure})",
+            xlabel="nr episodes",
+            ylabel=measure,
+            percentage=percentage,
+        )
+
+    print(
+        f'LSTM best results achieved with length={best_params["params"][0]} hidden_units={best_params["params"][1]} and nr_episodes={best_params["params"][2]}) ==> measure={best_performance:.6f}'
     )
     return best_model, best_params
