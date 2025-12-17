@@ -871,11 +871,12 @@ def dataframe_temporal_train_test_split(data: DataFrame, trn_pct: float = 0.90) 
 #             FORECASTING
 # ---------------------------------------
 
-from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_absolute_percentage_error, r2_score, root_mean_squared_error
 
 
 FORECAST_MEASURES = {
     "MSE": mean_squared_error,
+    "RMSE": root_mean_squared_error,
     "MAE": mean_absolute_error,
     "R2": r2_score,
     "MAPE": mean_absolute_percentage_error,
