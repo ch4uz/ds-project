@@ -220,90 +220,145 @@
 \subsection*{\textit{Exponential Smoothing}}
 %\ctext[RGB]{190,190,190}{May be used to identify the most atomic granularity and two other different granularities to consider.  \textbf{Shall not exceed 500 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_exponential_smoothing_RMSE_study.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_exponential_smoothing_MAE_study.png}
-\caption{Exponential Smoothing RMSE and MAE study for Inflation Rate Time Series}
+\caption{Exponential Smoothing (Univariate) RMSE and MAE study for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_exponential_smoothing_RMSE_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_exponential_smoothing_MAE_eval.png}
-\caption{Exponential Smoothing RMSE and MAE evaluation results for Inflation Rate Time Series}
+\caption{Exponential Smoothing (Univariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.7\textwidth]{inflation_exponential_smoothing_RMSE_forecast.png}
 \centering\includegraphics[width=0.7\textwidth]{inflation_exponential_smoothing_MAE_forecast.png}
-\caption{Exponential Smoothing RMSE and MAE forecasting for Inflation Rate Time Series}
+\caption{Exponential Smoothing (Univariate) RMSE and MAE forecasting for Inflation Rate Time Series}
 \end{figure}
 
 \subsection*{\textit{Multi-layer Perceptron}}
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series distribution.  \textbf{Shall not exceed 500 characters.}}
 
-Used a lag of k=4 (years)
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
-\centering\includegraphics[width=0.7\textwidth]{inflation_mlp_study.png}
-\caption{MLP RMSE, MAE and R2 study for Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{inflation_mlp_RMSE_study.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_mlp_MAE_study.png}
+\caption{MLP (Univariate) RMSE and MAE study for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.7\textwidth]{inflation_mlp_eval.png}
-\caption{MLP R2 evaluation results for Inflation Rate Time Series}
+\centering\includegraphics[width=0.45\textwidth]{inflation_mlp_RMSE_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_mlp_MAE_eval.png}
+\caption{MLP (Univariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
-\centering\includegraphics[width=0.7\textwidth]{inflation_mlp_forecast.png}
-\caption{MLP Best model (based on R2) forecasting for Inflation Rate Time Series}
+\centering\includegraphics[width=0.7\textwidth]{inflation_mlp_RMSE_forecast.png}
+\centering\includegraphics[width=0.7\textwidth]{inflation_mlp_MAE_forecast.png}
+\caption{MLP (Univariate) RMSE and MAE forecasting for Inflation Rate Time Series}
 \end{figure}
 
 \subsection*{\textit{ARIMA}}
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series stationarity.  \textbf{Shall not exceed 300 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.8\textwidth]{inflation_arima_diagnostics.png}
-\caption{ARIMA diagnostics for Inflation Rate Time Series}
+\caption{ARIMA (Univariate) diagnostics for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_arima_RMSE_study.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_arima_MAE_study.png}
-\caption{ARIMA RMSE and MAE study for Inflation Rate Time Series}
+\caption{ARIMA (Univariate) RMSE and MAE study for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_arima_RMSE_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_arima_MAE_eval.png}
-\caption{ARIMA RMSE and MAE evaluation results for Inflation Rate Time Series}
+\caption{ARIMA (Univariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.7\textwidth]{inflation_arima_RMSE_forecast.png}
 \centering\includegraphics[width=0.7\textwidth]{inflation_arima_MAE_forecast.png}
-\caption{ARIMA RMSE and MAE forecasting for Inflation Rate Time Series}
+\caption{ARIMA (Univariate) RMSE and MAE forecasting for Inflation Rate Time Series}
 \end{figure}
+
+\subsubsection*{Multivariate}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.8\textwidth]{inflation_arimax_diagnostics.png}
+\caption{ARIMA (Multivariate) diagnostics for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{inflation_arimax_RMSE_study.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_arimax_MAE_study.png}
+\caption{ARIMA (Multivariate) RMSE and MAE study for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{inflation_arimax_RMSE_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_arimax_MAE_eval.png}
+\caption{ARIMA (Multivariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.7\textwidth]{inflation_arimax_RMSE_forecast.png}
+\centering\includegraphics[width=0.7\textwidth]{inflation_arimax_MAE_forecast.png}
+\caption{ARIMA (Multivariate) RMSE and MAE forecasting for Inflation Rate Time Series}
+\end{figure}
+
+
 
 \subsection*{\textit{LSTM}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying three different aggregations over both datasets, and identifying the granularity chosen to proceed.  \textbf{Shall not exceed 300 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_lstms_RMSE_study.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_lstms_MAE_study.png}
-\caption{LSTM RMSE and MAE study for Inflation Rate Time Series}
+\caption{LSTM (Univariate) RMSE and MAE study for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{inflation_lstms_RMSE_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{inflation_lstms_MAE_eval.png}
-\caption{LSTM RMSE and MAE evaluation results for Inflation Rate Time Series}
+\caption{LSTM (Univariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.7\textwidth]{inflation_lstms_RMSE_forecast.png}
 \centering\includegraphics[width=0.7\textwidth]{inflation_lstms_MAE_forecast.png}
-\caption{LSTM RMSE and MAE forecasting for Inflation Rate Time Series}
+\caption{LSTM (Univariate) RMSE and MAE forecasting for Inflation Rate Time Series}
 \end{figure}
 
+\subsubsection*{Multivariate}
 
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{inflation_lstm_multivariate_RMSE_study.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_lstm_multivariate_MAE_study.png}
+\caption{LSTM (Multivariate) RMSE and MAE study for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.45\textwidth]{inflation_lstm_multivariate_RMSE_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{inflation_lstm_multivariate_MAE_eval.png}
+\caption{LSTM (Multivariate) RMSE and MAE evaluation results for Inflation Rate Time Series}
+\end{figure}
+
+\begin{figure}[H]
+\centering\includegraphics[width=0.7\textwidth]{inflation_lstm_multivariate_RMSE_forecast.png}
+\centering\includegraphics[width=0.7\textwidth]{inflation_lstm_multivariate_MAE_forecast.png}
+\caption{LSTM (Multivariate) RMSE and MAE forecasting for Inflation Rate Time Series}
+\end{figure}
 
 \end{document}
