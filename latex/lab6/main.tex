@@ -79,124 +79,136 @@
 \subsection*{\textit{Exponential Smoothing}}
 %\ctext[RGB]{190,190,190}{May be used to identify the most atomic granularity and two other different granularities to consider.  \textbf{Shall not exceed 500 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_R2_study.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_MAPE_study.png}
-\caption{Exponential Smoothing R2 and MAPE study for Traffic Time Series}
+\caption{Exponential Smoothing (Univariate) R2 and MAPE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_R2_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_MAPE_eval.png}
-\caption{Exponential Smoothing R2 and MAPE evaluation results for Traffic Time Series}
+\caption{Exponential Smoothing (Univariate) R2 and MAPE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_R2_forecast.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_exponential_smoothing_MAPE_forecast.png}
-\caption{Exponential Smoothing R2 and MAPE forecasting for Traffic Time Series}
+\caption{Exponential Smoothing (Univariate) R2 and MAPE forecasting for Traffic Time Series}
 \end{figure}
 
 
 \subsection*{\textit{Multi-layer Perceptron}}
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series distribution.  \textbf{Shall not exceed 500 characters.}}
 
+\subsubsection*{Multivariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_R2_study.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_MAPE_study.png}
-\caption{MLP R2 and MAPE study for Traffic Time Series}
+\caption{MLP (Multivariate) R2 and MAPE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_R2_params('adaptive', 0.05, 1500)_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_MAPE_params('constant', 0.5, 500)_eval.png}
-\caption{MLP R2 and MAPE evaluation results for Traffic Time Series}
+\caption{MLP (Multivariate) R2 and MAPE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_R2_forecast.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_mlp_MAPE_forecast.png}
-\caption{MLP R2 and MAPE forecasting for Traffic Time Series}
+\caption{MLP (Multivariate) R2 and MAPE forecasting for Traffic Time Series}
 \end{figure}
 
 
 \subsection*{\textit{ARIMA}}
 %\ctext[RGB]{190,190,190}{Shall be used to perform the data analysis at those three different granularities, concerning the series stationarity.  \textbf{Shall not exceed 300 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_R2_study.png}
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_MAPE_study.png}
-%\caption{ARIMA R2 and MAPE study for Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_R2_study.png}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_MAPE_study.png}
+\caption{ARIMA (Univariate) R2 and MAPE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_R2_eval.png}
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_MAPE_eval.png}
-%\caption{ARIMA R2 and MAPE evaluation results for Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_R2_eval.png}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_MAPE_eval.png}
+\caption{ARIMA (Univariate) R2 and MAPE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_R2_forecast.png}
-%\centering\includegraphics[width=0.45\textwidth]{traffic_arima_MAPE_forecast.png}
-%\caption{ARIMA R2 and MAPE forecasting for Traffic Time Series}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_R2_forecast.png}
+\centering\includegraphics[width=0.45\textwidth]{traffic_arima_univariate_MAPE_forecast.png}
+\caption{ARIMA (Univariate) R2 and MAPE forecasting for Traffic Time Series}
 \end{figure}
+
+\subsubsection*{Multivariate}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_R2_study.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_MAPE_study.png}
-\caption{ARIMA with exogenous variables R2 and MAPE study for Traffic Time Series}
+\caption{ARIMA (Multivariate) R2 and MAPE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_R2_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_MAPE_eval.png}
-\caption{ARIMA with exogenous variables R2 and MAPE evaluation results for Traffic Time Series}
+\caption{ARIMA (Multivariate) R2 and MAPE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_R2_forecast.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_arima_exog_MAPE_forecast.png}
-\caption{ARIMA with exogenous variables R2 and MAPE forecasting for Traffic Time Series}
+\caption{ARIMA (Multivariate) R2 and MAPE forecasting for Traffic Time Series}
 \end{figure}
 
 
 \subsection*{\textit{LSTM}}
 %\ctext[RGB]{190,190,190}{Shall describe the results of applying three different aggregations over both datasets, and identifying the granularity chosen to proceed.  \textbf{Shall not exceed 300 characters.}}
 
+\subsubsection*{Univariate}
+
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_RMSE_study.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_MAE_study.png}
-\caption{LSTM RMSE and MAE study for Traffic Time Series}
+\caption{LSTM (Univariate) RMSE and MAE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_RMSE_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_MAE_eval.png}
-\caption{LSTM RMSE and MAE evaluation results for Traffic Time Series}
+\caption{LSTM (Univariate) RMSE and MAE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_RMSE_forecast.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstms_MAE_forecast.png}
-\caption{LSTM RMSE and MAE forecasting for Traffic Time Series}
+\caption{LSTM (Univariate) RMSE and MAE forecasting for Traffic Time Series}
 \end{figure}
+
+\subsubsection*{Multivariate}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_R2_study.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_MAPE_study.png}
-\caption{Multivariate LSTM R2 and MAPE study for Traffic Time Series}
+\caption{LSTM (Multivariate) R2 and MAPE study for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_R2_eval.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_MAPE_eval.png}
-\caption{Multivariate LSTM R2 and MAPE evaluation results for Traffic Time Series}
+\caption{LSTM (Multivariate) R2 and MAPE evaluation results for Traffic Time Series}
 \end{figure}
 
 \begin{figure}[H]
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_R2_forecast.png}
 \centering\includegraphics[width=0.45\textwidth]{traffic_lstm_multivariate_MAPE_forecast.png}
-\caption{Multivariate LSTM R2 and MAPE forecasting for Traffic Time Series}
+\caption{LSTM (Multivariate) R2 and MAPE forecasting for Traffic Time Series}
 \end{figure}
 
 
