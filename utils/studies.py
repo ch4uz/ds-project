@@ -4,6 +4,7 @@ from matplotlib.figure import Figure
 from matplotlib.gridspec import GridSpec
 import numpy as np
 from numpy import array, ndarray, argsort, arange, std
+from copy import deepcopy
 from matplotlib.pyplot import subplots
 from matplotlib.pyplot import figure, savefig, show, subplots
 from pandas import DataFrame, concat, Series
@@ -356,6 +357,95 @@ def mlp_study_forecast(
     )
 
     return best_model, best_params
+
+def mlp_study_forecast_univariate(
+    train,
+    test,
+    measure: str = "RMSE",
+    lag_values=(1, 2),
+    hidden_units=(5, 10, 25, 50, 100),
+    nr_max_iterations: int = 2000,
+    step: int = 200,
+    verbose: bool = False,
+    random_state: int = 1,
+):
+    iterations = [step] + [i for i in range(2 * step, nr_max_iterations + 1, step)]
+
+    minimize = measure in ("MAPE", "MAE", "MSE", "RMSE")
+    best_performance = float("inf") if minimize else -float("inf")
+    best_model = None
+    best_params = {"name": "MLP", "metric": measure, "params": ()}
+
+    _, axs = subplots(1, len(lag_values), figsize=(len(lag_values) * HEIGHT, HEIGHT), squeeze=False)
+
+    for i, lag in enumerate(lag_values):
+        X_trn, y_trn, X_tst, y_tst = make_supervised_from_train_test(train, test, lag=lag)
+        if len(y_tst) == 0 or len(y_trn) == 0:
+            continue
+
+        values = {}
+        for h in hidden_units:
+            yvals = []
+            clf = MLPRegressor(
+                hidden_layer_sizes=(h,),
+                solver="adam",
+                activation="relu",
+                max_iter=step,
+                warm_start=True,
+                random_state=random_state,
+                verbose=verbose,
+            )
+
+            total = 0
+            for _ in iterations:
+                clf.max_iter = step
+                clf.fit(X_trn, y_trn)
+                total += step
+
+                prd = clf.predict(X_tst)
+                score = FORECAST_MEASURES[measure](y_tst, prd)
+                yvals.append(score)
+
+                improved = (score < best_performance - DELTA_IMPROVE) if minimize else (score > best_performance + DELTA_IMPROVE)
+                if improved:
+                    best_performance = score
+                    best_params["params"] = (lag, h, total)
+                    best_model = deepcopy(clf)
+
+            values[h] = yvals
+
+        plot_multiline_chart(
+            iterations,
+            values,
+            ax=axs[0, i],
+            title=f"MLP lag={lag} ({measure})",
+            xlabel="nr iterations",
+            ylabel=measure,
+            percentage=(measure == "MAPE"),
+        )
+
+    print(f"MLP best params={best_params['params']} -> {measure}={best_performance}")
+    return best_model, best_params
+
+def make_supervised_from_train_test(train, test, lag: int):
+    full = np.concatenate([np.asarray(train, dtype=float),
+                           np.asarray(test, dtype=float)])
+    n_train = len(train)
+    n_full = len(full)
+
+    X_trn, y_trn = [], []
+    X_tst, y_tst = [], []
+
+    for t in range(lag, n_full):
+        x = full[t-lag:t]
+        y = full[t]
+        if t < n_train:
+            X_trn.append(x); y_trn.append(y)
+        else:
+            X_tst.append(x); y_tst.append(y)
+
+    return (np.asarray(X_trn), np.asarray(y_trn),
+            np.asarray(X_tst), np.asarray(y_tst))
 
 def mlp_study_tuned_for_flight(
     trnX: ndarray,

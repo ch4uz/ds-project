@@ -1125,6 +1125,56 @@ def arima_study_forecasting(train: Series, test: Series, measure: str = "R2", ex
 
     return best_model, best_params
 
+def arima_study_forecasting_inflation_exog(
+    train: Series,
+    test: Series,
+    measure: str = "RMSE",
+    exog_train: DataFrame | None = None,
+    exog_test: DataFrame | None = None,
+):
+    d_values = (0, 1, 2)
+    p_params = (1, 2, 3)
+    q_params = (0, 1, 2)
+
+    minimize = measure in ("MAPE", "MAE", "MSE", "RMSE")
+    best_performance = float("inf") if minimize else -float("inf")
+
+    best_model = None
+    best_params: dict = {"name": "ARIMAX", "metric": measure, "params": ()}
+
+    fig, axs = subplots(1, len(d_values), figsize=(len(d_values) * HEIGHT, HEIGHT))
+
+    for i, d in enumerate(d_values):
+        values = {}
+        for q in q_params:
+            yvalues = []
+            for p in p_params:
+                model = ARIMA(train, exog=exog_train, order=(p, d, q)).fit()
+                prd_tst = model.forecast(steps=len(test), exog=exog_test)
+                score = FORECAST_MEASURES[measure](test, prd_tst)
+
+                improved = (score < best_performance - DELTA_IMPROVE) if minimize else (score > best_performance + DELTA_IMPROVE)
+                if improved:
+                    best_performance = score
+                    best_params["params"] = (p, d, q)
+                    best_model = model
+
+                yvalues.append(score)
+            values[q] = yvalues
+
+        plot_multiline_chart(
+            p_params,
+            values,
+            ax=axs[i],
+            title=f"ARIMAX d={d} ({measure})",
+            xlabel="p",
+            ylabel=measure,
+            percentage=(measure == "MAPE"),
+        )
+
+    print(f'ARIMAX best (p,d,q)=({best_params["params"][0]}, {best_params["params"][1]}, {best_params["params"][2]}) -> {measure}={best_performance}')
+    return best_model, best_params
+
 def arima_study_inflation(train: Series, test: Series, measure: str = "R2"):
     d_values = (0, 1, 2)
     p_params = (0, 1, 2, 3, 4, 5, 6)
@@ -1516,6 +1566,74 @@ def lstm_study_multivariate(train_data: DataFrame, test_data: DataFrame, target_
                             best_model = deepcopy(model)
 
                     yvalues.append(eval_score)
+            values[hidden] = yvalues
+
+        plot_multiline_chart(
+            episodes,
+            values,
+            ax=axs[i],
+            title=f"LSTM Multivariate seq length={length} ({measure})",
+            xlabel="nr episodes",
+            ylabel=measure,
+            percentage=percentage,
+        )
+
+    print(
+        f'LSTM Multivariate best results achieved with length={best_params["params"][0]} hidden_units={best_params["params"][1]} and nr_episodes={best_params["params"][2]}) ==> measure={best_performance:.6f}'
+    )
+    return best_model, best_params
+
+def lstm_study_multivariate_inflation(
+    train_data: DataFrame,
+    test_data: DataFrame,
+    target_col: str,
+    nr_episodes: int = 3000,
+    measure: str = "RMSE",
+):
+    sequence_size = [1, 2]
+    nr_hidden_units = [25, 50, 100]
+
+    step: int = max(1, nr_episodes // 10)
+    episodes = [1] + list(range(0, nr_episodes + 1, step))[1:]
+    percentage = measure == "MAPE"
+
+    minimize = measure in ("MAPE", "MAE", "MSE", "RMSE")
+    best_model = None
+    best_params: dict = {"name": "LSTM_Multivariate_Inflation", "metric": measure, "params": ()}
+    best_performance: float = float("inf") if minimize else -float("inf")
+
+    n_features = train_data.shape[1]
+
+    _, axs = subplots(1, len(sequence_size), figsize=(len(sequence_size) * HEIGHT, HEIGHT))
+    if len(sequence_size) == 1:
+        axs = [axs]
+
+    test_target = test_data[target_col].astype("float32")
+
+    for i, length in enumerate(sequence_size):
+        tstX, _ = prepare_multivariate_dataset_for_lstm(test_data, target_col, seq_length=length)
+        if tstX.shape[0] == 0:
+            continue
+
+        values = {}
+        for hidden in nr_hidden_units:
+            yvalues = []
+            model = DS_LSTM_Multivariate(train_data, target_col, input_size=n_features, hidden_size=hidden, length=length)
+
+            for n in range(0, nr_episodes + 1):
+                model.fit()
+                if n % step == 0:
+                    prd_tst = model.predict(tstX).detach().cpu().numpy().ravel()
+                    score: float = FORECAST_MEASURES[measure](test_target[length:], prd_tst)
+                    print(f"seq length={length} hidden_units={hidden} nr_episodes={n} n_features={n_features}", score)
+
+                    improved = (score < best_performance - DELTA_IMPROVE) if minimize else (score > best_performance + DELTA_IMPROVE)
+                    if improved:
+                        best_performance = score
+                        best_params["params"] = (length, hidden, n)
+                        best_model = deepcopy(model)
+
+                    yvalues.append(score)
             values[hidden] = yvalues
 
         plot_multiline_chart(
